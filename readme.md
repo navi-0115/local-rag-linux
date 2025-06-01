@@ -1,0 +1,3 @@
+- pip install -r requirements.txt
+- streamlit run frontend/app.py
+- fastapi run backend/api.py

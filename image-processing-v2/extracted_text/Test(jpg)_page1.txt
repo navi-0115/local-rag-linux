@@ -1,0 +1,13 @@
+GPT-3 architecture
+Generative Pre-trained Transformer 3
+Or GPT-3, stands as a remarkable
+language model crafted by OpenAl.
+Developed by OpenAl, GPT-3 boasts
+ccering 17s billion parameters,
+1
+making it one of the largest language
+models to date. The architecture
+retains the fundamental principles of
+lhe GPT series, featuring multiple
+layers of atlention mechanisms and
+feedforward networks
