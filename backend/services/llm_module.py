@@ -28,14 +28,18 @@ def query_llm(prompt):
 
 def translate_context(context: str) -> str:
     try:
-        prompt = f"""You are an assistant for translation tasks. Use the following pieces of retrieved context \n\n---\n{context}\n to translate it in english. IF ITS IN CHINESE, TRANSLATE IN ENGLISH. DO NOT GIVE CHINESE RESULTS. DON'T HALLUCINATE AND DON'T MAKE UP ANYTHING."""
+        prompt = f"""You are an assistant for translation tasks. 
+        Use the following pieces of retrieved context \n\n---\n{context}\n to translate it in english. 
+        IF ITS IN CHINESE, TRANSLATE IN ENGLISH. DO NOT GIVE CHINESE RESULTS. DON'T HALLUCINATE AND DON'T MAKE UP ANYTHING."""
         return query_llm(prompt)
     except Exception as e:
         raise RuntimeError(f"Translation failed: {str(e)}") from e
 
 def summarize_context(context: str) -> str:
     try:
-        prompt = f"You are an assistant for summarization tasks. Use the following pieces of retrieved context \n\n---\n{context}\n to summarize it in english. DON'T HALLUCINATE AND DON'T MAKE UP ANYTHING. summarize informatively based on the above context"
+        prompt = f"""You are an assistant for summarization tasks. 
+        Use the following pieces of retrieved context \n\n---\n{context}\n to summarize it in english. 
+        DON'T HALLUCINATE AND DON'T MAKE UP ANYTHING. summarize informatively based on the above context"""
         return query_llm(prompt)
     except Exception as e:
         raise RuntimeError(f"Summarization failed: {str(e)}") from e

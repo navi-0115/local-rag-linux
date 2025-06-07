@@ -50,7 +50,6 @@ async def post_file_ocr(file: UploadFile = File(...)):
         content = await file.read()
         temporary_image.write(content)
         temp_path = temporary_image.name
-
     # Preprocessing
     try:
         preprocessed_file = light_preprocess_image(temp_path)
@@ -64,29 +63,24 @@ async def post_file_ocr(file: UploadFile = File(...)):
             print("OCR resulted in empty text. Skipping embedding.")
         else:
             print(f"OCR successful. Length: {len(extracted_text)}. Embedding extracted text...")
-            embed_transcription(extracted_text) # Embed the full extracted text
+            embed_transcription(extracted_text)
             print(f"Embedding of extracted image/PDF text successful. FAISS index updated/created at {FAISS_INDEX_PATH}")
 
     except Exception as e:
-        # This will catch errors from extract_text or embed_transcription
         print(f"Error during OCR or Embedding for image/PDF: {str(e)}")
         raise HTTPException(status_code=500, detail=f"OCR or Embedding failed: {str(e)}")
     
-    # Generate text snippet
     snippet_max_length = 250
     if not extracted_text or not extracted_text.strip():
         text_snippet = "No text extracted from document."
     else:
         text_snippet = extracted_text[:snippet_max_length] + "..." if len(extracted_text) > snippet_max_length else extracted_text
-    
-    # No longer saving summary to a file or generating full summary here.
-    # That functionality is now implicitly handled by RAG/chat.
 
     return JSONResponse(
         status_code=200,
         content={
             "message": "Uploaded file processed successfully and content embedded.",
-            "image_path": preprocessed_file, # Path to the processed image
+            "image_path": preprocessed_file, 
             "text_snippet": text_snippet
         }
     )
@@ -199,7 +193,6 @@ async def post_pdf_direct(file: UploadFile = File(...)):
 @app.post("/post-audio", status_code=200)
 async def process_audio_endpoint(file: UploadFile = File(...)):
     try:
-        # Save uploaded audio file to a temporary location
         suffix = os.path.splitext(file.filename)[-1].lower()
         if not suffix: 
             suffix = '.mp3'

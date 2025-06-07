@@ -30,7 +30,7 @@ def embed_transcription(transcription):
 
     if os.path.exists(FAISS_INDEX_PATH):
         # Load the existing FAISS index
-        vector_store = FAISS.load_local(FAISS_INDEX_PATH, embeddings, allow_dangerous_deserialization=True) # Added allow_dangerous_deserialization=True
+        vector_store = FAISS.load_local(FAISS_INDEX_PATH, embeddings, allow_dangerous_deserialization=True)
         # Add new texts to the loaded index
         vector_store.add_texts(texts)
         print(f"FAISS index loaded from {FAISS_INDEX_PATH} and updated.")
