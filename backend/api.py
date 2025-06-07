@@ -220,7 +220,7 @@ async def process_audio_endpoint(file: UploadFile = File(...)):
             }
         )
     except Exception as e:
-        print(f"Error in /process-audio: {str(e)}")
+        print(f"Error in /post-audio: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Error processing audio: {str(e)}")
     finally:
         # Clean up the temporary audio file

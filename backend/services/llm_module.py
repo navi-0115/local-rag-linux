@@ -2,6 +2,7 @@
 import requests
 from langdetect import detect
 import json
+import os
 
 def query_llm(prompt):
     llm_api_url = os.getenv("LLM_API_URL", "http://localhost:11434")
