@@ -28,7 +28,8 @@ curl https://ollama.ai/install.sh | sh
 3. Pull and Run Gemma Model
 
 ```bash
-ollama run gemma3:4b
+ollama pull gemma3:4b
+ollama pull nomic-embed-text
 ```
 
 4. Install Python Dependencies
