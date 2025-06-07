@@ -130,7 +130,6 @@ def handle_webcam_capture(camera_photo):
     try:
         display_message("system", "📸 Webcam capture received")
         
-        # Create in-memory file
         img_bytes = camera_photo.getvalue()
         files = {"file": ("webcam_capture.jpg", img_bytes, "image/jpeg")}
         
@@ -179,7 +178,6 @@ def process_uploaded_file(uploaded_file):
 
         if uploaded_file.type == "application/pdf":
             endpoint_url = f"{API_URL}/post-pdf-direct"
-            # For /process-pdf-direct, send the raw PDF bytes
             files_payload = {"file": (uploaded_file.name, uploaded_file.getvalue(), "application/pdf")}
             
             with st.spinner("Processing PDF directly..."):
@@ -200,7 +198,7 @@ def process_uploaded_file(uploaded_file):
             }
 
         elif uploaded_file.type.startswith("image"):
-            endpoint_url = f"{API_URL}/process"
+            endpoint_url = f"{API_URL}/post-image"
         
             # Send original file without conversion
             uploaded_file.seek(0)  
