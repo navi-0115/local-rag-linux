@@ -13,7 +13,7 @@ def extract_text(image_path: str, text_save_path: str = None, lang='ch') -> str:
         
     try:
         for line in result:
-            if line:  # Check for empty lines
+            if line:
                 for word_info in line:
                     if word_info and len(word_info) >= 2:
                         text_entry = word_info[1]

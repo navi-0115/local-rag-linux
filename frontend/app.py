@@ -1,4 +1,4 @@
-# app.py - Main Streamlit application for Documma
+# app.py - Main Streamlit application 
 import streamlit as st
 import requests
 from PIL import Image
@@ -145,10 +145,10 @@ def handle_webcam_capture(camera_photo):
         
         display_message("assistant", f"✅ Image captured, processed, and translated!")
         if translated_text and translated_text != "No translated text available.":
-            # Display the full translated text in an expander or text area for better readability
+            # Display the full translated text 
             with st.expander("📜 View Full Translated Text", expanded=True):
                 st.text_area("", translated_text, height=350, disabled=False)
-            display_message("assistant", f"📝 Translated Text Snippet:\n{snippet}") # Display snippet as well for quick overview
+            display_message("assistant", f"📝 Translated Text Snippet:\n{snippet}") 
         else:
             display_message("assistant", "ℹ️ No text was detected or translated from the image.")
         # Store in session state
@@ -304,16 +304,16 @@ if "processed_audio_files" not in st.session_state:
     st.session_state.processed_audio_files = []
 if "messages" not in st.session_state:
     st.session_state.messages = []
-if "chat_ready" not in st.session_state: # To enable chat interface
+if "chat_ready" not in st.session_state: 
     st.session_state.chat_ready = False
-if "current_transcript" not in st.session_state: # To store transcript from audio
+if "current_transcript" not in st.session_state: 
     st.session_state.current_transcript = None
 
 
 # Sidebar controls
 with st.sidebar:
     st.header("⚙️ Control Panel")
-    mode = st.radio("Input Method:", ["Upload File", "Webcam Capture", "Audio"]) # Added "Audio"
+    mode = st.radio("Input Method:", ["Upload File", "Webcam Capture", "Audio"]) 
     
     st.markdown("---")
     st.header("Document Preview")
@@ -326,7 +326,7 @@ with st.sidebar:
             st.write(f"**Type:** PDF Document")
             pdf_to_display = current_file.get("original_file_object")
             if pdf_to_display:
-                # Ensure the UploadedFile object's internal pointer is at the beginning
+                #
                 pdf_to_display.seek(0) 
                 display_pdf(pdf_to_display)
                 
@@ -342,14 +342,14 @@ with st.sidebar:
                     mime="text/plain"
                 )
                  
-        elif file_type == "webcam": # New Webcam Specific Logic
+        elif file_type == "webcam":
             st.write(f"**Type:** Webcam Capture")
             if "imaage_path" in current_file and current_file["imaage_path"]:
                 try:
                     st.image(Image.open(current_file["imaage_path"]), caption=current_file["name"])
                 except Exception as e:
                     st.warning(f"Webcam image preview unavailable: {e}")
-            elif "text_snippet" in current_file: # Fallback to snippet if full translation somehow missing
+            elif "text_snippet" in current_file: 
                 st.text_area("Text Snippet", current_file["text_snippet"], height=100, disabled=True)
         # For images (processed by /post-image) and webcam captures
         elif "image" in current_file and current_file["image"]: 
@@ -391,7 +391,7 @@ with st.container():
             key="file_uploader"
         )
         
-        if uploaded_files: # Variable name updated
+        if uploaded_files:
             for uploaded_file in uploaded_files: 
                 processed_file_names = [f['name'] for f in st.session_state.processed_files]
                 if uploaded_file.name not in processed_file_names:
@@ -406,10 +406,10 @@ with st.container():
             help="Position your document in the frame and click the capture button"
         )
         if camera_photo_ui:
-            # st.image(camera_photo_ui, caption="Captured Image", use_column_width=True)
+ 
             if st.button("📸 Analyze Now", key="capture_btn", use_container_width=True):
                 if camera_photo_ui:
-                    handle_webcam_capture(camera_photo_ui) # Parameter name updated
+                    handle_webcam_capture(camera_photo_ui) 
                 else:
                     st.error("Please allow webcam access first")
     
@@ -422,10 +422,9 @@ with st.container():
         )
 
         if uploaded_audio_file_from_ui:
-            # Call the refactored function using global API_URL and display_message
             handle_audio_processing(uploaded_audio_file_from_ui, API_URL, display_message)
 
-    # Chat interface - appears if chat is ready (a document has been processed)
+    # Chat interface - appears if chat is ready 
     if st.session_state.get('chat_ready', False):
         st.markdown("---")
         st.subheader("💬 Chat with your Document")
@@ -465,6 +464,6 @@ with st.container():
             except Exception as e:
                 st.session_state.messages.append({"role": "assistant", "content": f"An error occurred: {str(e)}"})
 
-            st.rerun() # Rerun to update chat display with new messages
+            st.rerun() 
     elif not st.session_state.get('current_file') and not mode : 
         st.info("Select an input method and process a file to begin chatting.")

@@ -8,11 +8,9 @@ from services.ocr_module import extract_text
 from services.preprocess import preprocess_image, light_preprocess_image
 from services.llm_module import translate_context, summarize_context
 
-# Imports for speech-to-text and chat functionalities
-# import os
 import tempfile
 import io
-from fastapi import Body, HTTPException # Added Body
+from fastapi import Body, HTTPException
 from fastapi.responses import HTMLResponse
 
 from services.speech_to_text import transcribe_audio, embed_transcription
@@ -21,7 +19,6 @@ from langchain.embeddings import OllamaEmbeddings
 from langchain.vectorstores import FAISS
 from pypdf import PdfReader 
 from langchain.llms import Ollama
-# RecursiveCharacterTextSplitter is used within embed_transcription
 
 # Define the path to the FAISS index (relative to this api.py file)
 FAISS_INDEX_PATH = "services/faiss_index"
@@ -129,9 +126,6 @@ async def post_capture_image(file: UploadFile = File(...)):
         text_snippet = "No text detected or translated from image."
     else:
         text_snippet = translated_text[:snippet_max_length] + "..." if len(translated_text) > snippet_max_length else translated_text
-    
-    # No longer saving summary to a file or generating full summary here.
-    # That functionality is now implicitly handled by RAG/chat.
 
     return JSONResponse(
         status_code=200,
@@ -182,8 +176,8 @@ async def post_pdf_direct(file: UploadFile = File(...)):
             }
         )
     except Exception as e:
-        print(f"Error processing PDF directly: {str(e)}") # Log the error
-        # Consider more specific error handling for pypdf exceptions if needed
+        print(f"Error processing PDF directly: {str(e)}") 
+
         raise HTTPException(status_code=500, detail=f"Failed to process PDF: {str(e)}")
     finally:
         await file.close()
@@ -253,7 +247,6 @@ async def chat_endpoint(payload: dict = Body(...)):
             print(f"FAISS index loaded successfully from {FAISS_INDEX_PATH}")
         except Exception as e:
             print(f"Error loading FAISS index: {str(e)}")
-            # Attempt to provide more specific feedback if it's a common issue
             if "No such file or directory" in str(e) and "index.faiss" in str(e):
                  error_detail = "FAISS index files (e.g., index.faiss, index.pkl) not found. Ensure uploaded file was processed."
             else:
@@ -287,7 +280,6 @@ async def chat_endpoint(payload: dict = Body(...)):
             content={"answer": response}
         )
     except HTTPException as e:
-        # Re-raise HTTPExceptions to let FastAPI handle them
         raise e
     except Exception as e:
         print(f"Error in /chat: {str(e)}")
