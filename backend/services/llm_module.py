@@ -4,13 +4,14 @@ from langdetect import detect
 import json
 
 def query_llm(prompt):
+    llm_api_url = os.getenv("LLM_API_URL", "http://localhost:11434")
+    
     response = requests.post(
-        "http://localhost:11434/api/generate",
+        f"{llm_api_url}/api/generate",
         json={
             "model": "gemma3:4b",
             "prompt": prompt,
             "stream": False,
-
         }
     )
     try:
