@@ -23,9 +23,11 @@ from langchain.llms import Ollama
 # Define the path to the FAISS index (relative to this api.py file)
 FAISS_INDEX_PATH = "services/faiss_index"
 
-# Initialize Ollama components
-embeddings = OllamaEmbeddings(model="nomic-embed-text")
-llm = Ollama(model="gemma3:4b") 
+
+# Initialize Ollama components, passing the base_url
+OLLAMA_SERVICE_URL = os.getenv("LLM_API_URL", "http://localhost:11434")
+embeddings = OllamaEmbeddings(model="nomic-embed-text", base_url=OLLAMA_SERVICE_URL)
+llm = Ollama(model="gemma3:4b", base_url=OLLAMA_SERVICE_URL)
 
 app = FastAPI()
 app.add_middleware(

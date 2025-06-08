@@ -25,9 +25,10 @@ services:
     image: ollama/ollama:latest
     ports:
       - "11434:11434"
-    command: sh -c "ollama serve & ollama pull gemma:4b"
     volumes:
-      - ollama_data:/root/.ollama
+      - ollama_data:/root/.ollama # For persisting Ollama models and data
+    #   - ./ollama_setup:/model_files # MOUNT THE SCRIPT DIRECTORY
+    # entrypoint: ["/bin/sh", "/model_files/run_ollama.sh"]
     restart: unless-stopped
 
 networks:
